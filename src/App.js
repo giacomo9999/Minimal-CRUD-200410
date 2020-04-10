@@ -48,7 +48,6 @@ class App extends Component {
   render() {
     return (
       <div className="container-outer">
-        <h1>APP</h1>
         <MonsterList
           monsterData={this.state.monsterData}
           deleteMonster={this.deleteMonster}
