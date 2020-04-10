@@ -4,7 +4,7 @@ const EditMonsterForm = (props) => {
   return (
     <div className="container-inner">
       <h2>Edit Monster</h2>
-      <form className="h-form" onSubmit={props.addMonster}>
+      <form className="h-form">
         <label className="h-label">Name</label>
         <input
           className="h-input"
