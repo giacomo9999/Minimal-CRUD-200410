@@ -8,7 +8,7 @@ const MonsterList = (props) => {
       <td>{monster.hitDice}</td>
       <td>{monster.alignment}</td>
       <td>
-        <button onClick={() => props.editMonster(monster.id)}>Edit</button>
+        <button onClick={() => props.editMonster(monster)}>Edit</button>
       </td>
       <td>
         <button onClick={() => props.deleteMonster(monster.id)}>Delete</button>

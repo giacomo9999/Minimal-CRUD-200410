@@ -7,13 +7,12 @@ import "./App.css";
 
 class App extends Component {
   state = {
-    tempData: {
-      editPanelOpen: false,
-      editID: null,
-      editName: "",
-      editHitDice: "",
-      editAlignment: "",
-    },
+    editPanelOpen: false,
+    editID: null,
+    editName: "",
+    editHitDice: "",
+    editAlignment: "",
+
     monsterData: [
       { id: 1, name: "Axe Beak", hitDice: "3", alignment: "Neutral" },
       {
@@ -27,14 +26,40 @@ class App extends Component {
     ],
   };
 
-  handleInputUpdate = () => {};
+  handleInputChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-  addMonster = (monster) => {};
+  addMonster = (e) => {
+    e.preventDefault();
+    const newMonster = {
+      id: this.state.monsterData.length + 1,
+      name: this.state.editName,
+      hitDice: this.state.editHitDice,
+      alignment: this.state.editAlignment,
+    };
+    this.setState({
+      editName: "",
+      editHitDice: "",
+      editAlignment: "",
+      monsterData: [...this.state.monsterData, newMonster],
+    });
+  };
 
-  editMonster = (id) => {
-    console.log(`editMonster....${id}`);
-    this.setState({ tempData: { editPanelOpen: true } });
-    console.log(this.state.tempData);
+  setEditPanel = (value) => {
+    console.log(`setEditPanel: ${value}`);
+    this.setState({ editPanelOpen: value });
+  };
+
+  editMonster = (monster) => {
+    console.log(`editMonster....${monster.name}`);
+    this.setEditPanel(true);
+    this.setState({
+      editId: monster.id,
+      editName: monster.name,
+      editHitDice: monster.hitDice,
+      editAlignment: monster.alignment,
+    });
   };
 
   deleteMonster = (id) => {
@@ -45,6 +70,27 @@ class App extends Component {
     this.setState({ monsterData: revisedMonsterData });
   };
 
+  updateMonster = (e) => {
+    e.preventDefault();
+    const updatedMonster = {
+      id: this.state.editId,
+      name: this.state.editName,
+      hitDice: this.state.editHitDice,
+      alignment: this.state.editAlignment,
+    };
+    const newMonsterList = this.state.monsterData.map((monster) =>
+      monster.id === updatedMonster.id ? updatedMonster : monster
+    );
+    this.setState({
+      editPanelOpen: false,
+      editID: null,
+      editName: "",
+      editHitDice: "",
+      editAlignment: "",
+      monsterData: newMonsterList,
+    });
+  };
+
   render() {
     return (
       <div className="container-outer">
@@ -53,11 +99,21 @@ class App extends Component {
           deleteMonster={this.deleteMonster}
           editMonster={this.editMonster}
         />
-        {this.state.tempData.editPanelOpen ? (
-          <EditMonsterForm handleInputUpdate={this.handleInputUpdate} />
+        {this.state.editPanelOpen ? (
+          <EditMonsterForm
+            editName={this.state.editName}
+            editHitDice={this.state.editHitDice}
+            editAlignment={this.state.editAlignment}
+            handleInputChange={this.handleInputChange}
+            setEditPanel={this.setEditPanel}
+            updateMonster={this.updateMonster}
+          />
         ) : (
           <AddMonsterForm
-            handleInputUpdate={this.handleInputUpdate}
+            editName={this.state.editName}
+            editHitDice={this.state.editHitDice}
+            editAlignment={this.state.editAlignment}
+            handleInputChange={this.handleInputChange}
             addMonster={this.addMonster}
           />
         )}
